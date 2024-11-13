@@ -106,16 +106,21 @@ def preprocess_data(df):
 
 # Sidebar for navigation using clickable boxes
 st.sidebar.title("Menu")
-if st.sidebar.button("Home"):
-    st.session_state.page = "Home"
-elif st.sidebar.button("Model Prediction"):
-    st.session_state.page = "Model Prediction"
-elif st.sidebar.button("Evaluation Metrics"):
-    st.session_state.page = "Evaluation Metrics"
+home_button = st.sidebar.button("Home")
+prediction_button = st.sidebar.button("Model Prediction")
+evaluation_button = st.sidebar.button("Evaluation Metrics")
 
 # Create a session state to keep track of the active page
 if 'page' not in st.session_state:
     st.session_state.page = "Home"
+
+# Update the session state based on the button clicks
+if home_button:
+    st.session_state.page = "Home"
+elif prediction_button:
+    st.session_state.page = "Model Prediction"
+elif evaluation_button:
+    st.session_state.page = "Evaluation Metrics"
 
 # Show content based on the selected page
 if st.session_state.page == "Home":
