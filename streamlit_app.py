@@ -105,7 +105,7 @@ def preprocess_data(df):
     return df
 
 # Sidebar for navigation using clickable boxes
-st.sidebar.title("Navigation")
+st.sidebar.title("Menu")
 home_button = st.sidebar.markdown('<div class="nav-box">Home</div>', unsafe_allow_html=True)
 prediction_button = st.sidebar.markdown('<div class="nav-box">Model Prediction</div>', unsafe_allow_html=True)
 evaluation_button = st.sidebar.markdown('<div class="nav-box">Evaluation Metrics</div>', unsafe_allow_html=True)
