@@ -8,6 +8,19 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
+# Set the page config with a dark theme
+st.set_page_config(
+    page_title="Intrusion Detection Model",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    theme={
+        "base": "dark",
+        "primaryColor": "#1f1f1f",
+        "backgroundColor": "#0e1117",
+        "secondaryBackgroundColor": "#161a1d",
+        "textColor": "#ffffff",
+    }
+)
 # Load the trained model
 @st.cache_resource
 def load_model():
