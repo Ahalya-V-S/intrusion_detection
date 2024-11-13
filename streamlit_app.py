@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
 # Set the page configuration
@@ -219,13 +218,16 @@ elif st.session_state.page == "Evaluation Metrics":
                 predictions = model.predict(df_processed)
                 df['Predictions'] = predictions
 
-                # Display Confusion Matrix and Classification Report if ground truth is available
+                # Encode 'class' column to match 'y_pred' (numeric) format
+                label_encoder = LabelEncoder()
+                y_true = label_encoder.fit_transform(df['class'])  # Encode true labels to numeric
+                y_pred = predictions  # Predictions are already numeric
+
+                # Display Confusion Matrix and Classification Report
                 st.write("### Analysis and Evaluation Metrics")
-                y_true = df['class']
-                y_pred = predictions
+                st.write("Confusion Matrix:")
 
                 # Confusion Matrix
-                st.write("Confusion Matrix:")
                 conf_matrix = confusion_matrix(y_true, y_pred)
                 fig, ax = plt.subplots()
                 sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
