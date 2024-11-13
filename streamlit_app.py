@@ -203,7 +203,7 @@ elif st.session_state.page == "Evaluation Metrics":
             # Read the uploaded file
             df = pd.read_csv(uploaded_file)
             st.write("Uploaded CSV Data:")
-            st.write(df.head())
+            st.write(df)
 
             # Check if required columns exist
             if 'class' not in df.columns:
