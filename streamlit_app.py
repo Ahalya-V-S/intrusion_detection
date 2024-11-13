@@ -106,21 +106,16 @@ def preprocess_data(df):
 
 # Sidebar for navigation using clickable boxes
 st.sidebar.title("Menu")
-home_button = st.sidebar.markdown('<div class="nav-box">Home</div>', unsafe_allow_html=True)
-prediction_button = st.sidebar.markdown('<div class="nav-box">Model Prediction</div>', unsafe_allow_html=True)
-evaluation_button = st.sidebar.markdown('<div class="nav-box">Evaluation Metrics</div>', unsafe_allow_html=True)
+if st.sidebar.button("Home"):
+    st.session_state.page = "Home"
+elif st.sidebar.button("Model Prediction"):
+    st.session_state.page = "Model Prediction"
+elif st.sidebar.button("Evaluation Metrics"):
+    st.session_state.page = "Evaluation Metrics"
 
 # Create a session state to keep track of the active page
 if 'page' not in st.session_state:
     st.session_state.page = "Home"
-
-# Detect click events to change the page content
-if "Home" in st.session_state and st.sidebar.button("Home"):
-    st.session_state.page = "Home"
-elif "Model Prediction" in st.session_state and st.sidebar.button("Model Prediction"):
-    st.session_state.page = "Model Prediction"
-elif "Evaluation Metrics" in st.session_state and st.sidebar.button("Evaluation Metrics"):
-    st.session_state.page = "Evaluation Metrics"
 
 # Show content based on the selected page
 if st.session_state.page == "Home":
@@ -147,33 +142,43 @@ elif st.session_state.page == "Model Prediction":
             st.write("Uploaded CSV Data:")
             st.write(df.head())
 
-            # Preprocess the data
-            df_processed = preprocess_data(df)
-            st.write("Preprocessed Data (selected and scaled features):")
-            st.write(df_processed.head())
+            # Check if required columns exist in the data
+            required_columns = ['protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes', 'hot',
+                                'logged_in', 'count', 'srv_count', 'same_srv_rate', 'diff_srv_rate',
+                                'dst_host_count', 'dst_host_srv_count', 'dst_host_same_srv_rate',
+                                'dst_host_diff_srv_rate', 'dst_host_same_src_port_rate',
+                                'dst_host_srv_diff_host_rate', 'dst_host_serror_rate',
+                                'dst_host_srv_serror_rate', 'dst_host_srv_rerror_rate']
+            
+            if not all(col in df.columns for col in required_columns):
+                st.error("Uploaded CSV is missing required columns.")
+            else:
+                # Preprocess the data
+                df_processed = preprocess_data(df)
+                st.write("Preprocessed Data (selected and scaled features):")
+                st.write(df_processed.head())
 
-            # Make predictions
-            predictions = model.predict(df_processed)
-            df['Predictions'] = predictions
+                # Make predictions
+                predictions = model.predict(df_processed)
+                df['Predictions'] = predictions
 
-            st.write("Prediction Results:")
-            st.write(df[['Predictions']].head())
+                st.write("Prediction Results:")
+                st.write(df[['Predictions']].head())
 
-            # Plot prediction distribution
-            st.write("Prediction Distribution:")
-            fig, ax = plt.subplots()
-            sns.histplot(df['Predictions'], kde=True, ax=ax)
-            st.pyplot(fig)
+                # Plot prediction distribution
+                st.write("Prediction Distribution:")
+                fig, ax = plt.subplots()
+                sns.histplot(df['Predictions'], kde=True, ax=ax)
+                st.pyplot(fig)
 
-            # Option to download predictions
-            st.write("Download Predictions:")
-            df.to_csv("predictions_with_data.csv", index=False)
-            st.download_button(
-                label="Download CSV with Predictions",
-                data=df.to_csv(index=False),
-                file_name="predictions_with_data.csv",
-                mime="text/csv"
-            )
+                # Option to download predictions
+                st.write("Download Predictions:")
+                st.download_button(
+                    label="Download CSV with Predictions",
+                    data=df.to_csv(index=False),
+                    file_name="predictions_with_data.csv",
+                    mime="text/csv"
+                )
 
         except Exception as e:
             st.error(f"Error processing the uploaded file: {e}")
@@ -194,17 +199,20 @@ elif st.session_state.page == "Evaluation Metrics":
             st.write("Uploaded CSV Data:")
             st.write(df.head())
 
-            # Preprocess the data
-            df_processed = preprocess_data(df)
-            st.write("Preprocessed Data (selected and scaled features):")
-            st.write(df_processed.head())
+            # Check if required columns exist
+            if 'class' not in df.columns:
+                st.error("Uploaded CSV is missing the 'class' column for ground truth.")
+            else:
+                # Preprocess the data
+                df_processed = preprocess_data(df)
+                st.write("Preprocessed Data (selected and scaled features):")
+                st.write(df_processed.head())
 
-            # Make predictions
-            predictions = model.predict(df_processed)
-            df['Predictions'] = predictions
+                # Make predictions
+                predictions = model.predict(df_processed)
+                df['Predictions'] = predictions
 
-            # Display Confusion Matrix and Classification Report if ground truth is available
-            if 'class' in df.columns:
+                # Display Confusion Matrix and Classification Report if ground truth is available
                 st.write("### Analysis and Evaluation Metrics")
                 y_true = df['class']
                 y_pred = predictions
