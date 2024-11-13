@@ -11,7 +11,6 @@ from sklearn.metrics import classification_report, confusion_matrix
 # Set the page configuration
 st.set_page_config(page_title="Anomaly Detection", page_icon="🌐")
 
-# Custom CSS to improve UI appearance
 st.markdown("""
     <style>
         /* Page Layout */
@@ -49,17 +48,20 @@ st.markdown("""
 
         /* Button Styling */
         .stButton>button {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #ffffff;
+            color: black;
             border-radius: 5px;
             padding: 12px 24px;
             font-size: 16px;
+            border: 2px solid black; /* Adds a black border */
         }
         .stButton>button:hover {
-            background-color: #45a049;
+            background-color: #000000;
+            color: white;
         }
     </style>
 """, unsafe_allow_html=True)
+
 
 # Load the trained model
 @st.cache_resource
