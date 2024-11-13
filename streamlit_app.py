@@ -53,9 +53,8 @@ def preprocess_data(df):
 
 # Streamlit app
 # Set the page configuration
-st.set_page_config(page_title="Anomaly Detection", page_icon="🔍")
-
-st.title("Anomaly Detection Model Prediction & Analysis")
+st.set_page_config(page_title="Anomaly Detection", page_icon="🌐")
+st.title("Intrusion Detection Model Prediction & Analysis")
 # Upload CSV file
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
