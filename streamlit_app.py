@@ -1,34 +1,92 @@
 import streamlit as st
 import pandas as pd
-import joblib
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
+
+# Set the page configuration
+st.set_page_config(page_title="Anomaly Detection", page_icon="🌐")
+
+# Custom CSS to improve UI appearance
+st.markdown("""
+    <style>
+        /* Page Layout */
+        .main {
+            background-color: #f0f2f6;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+        .sidebar .sidebar-content {
+            padding: 2rem;
+        }
+
+        /* Styling for sidebar */
+        .sidebar .sidebar-content {
+            background-color: #f4f7f9;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        /* Card Style for Sidebar */
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .card:hover {
+            background-color: #e8f0fe;
+            cursor: pointer;
+        }
+
+        /* Button Styling */
+        .stButton>button {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            padding: 12px 24px;
+            font-size: 16px;
+        }
+        .stButton>button:hover {
+            background-color: #45a049;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Load the trained model
 @st.cache_resource
 def load_model():
     return joblib.load('/content/drive/MyDrive/ML_project/XG_Boost_model.pkl')  # Replace with your model path
 
+# Encoding dictionary
+encoding_dict = {
+    "protocol_type": LabelEncoder(),
+    "service": LabelEncoder(),
+    "flag": LabelEncoder()
+}
+
+# StandardScaler instance for scaling
+scaler = StandardScaler()
+
 # Preprocessing function to mirror training steps
 def preprocess_data(df):
-    encoding_dict = {
-        "protocol_type": LabelEncoder(),
-        "service": LabelEncoder(),
-        "flag": LabelEncoder()
-    }
-    scaler = StandardScaler()
-
+    # Encode categorical features using predefined LabelEncoders
     for col, encoder in encoding_dict.items():
         if col in df.columns:
             df[col] = encoder.fit_transform(df[col])
-
+    
     # Drop 'num_outbound_cmds' if it exists in the dataframe
     if 'num_outbound_cmds' in df.columns:
         df = df.drop(columns=['num_outbound_cmds'])
 
-    # Select relevant features
+    # Select only the relevant features
     selected_features = [
         'protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes', 'hot',
         'logged_in', 'count', 'srv_count', 'same_srv_rate', 'diff_srv_rate',
@@ -45,48 +103,11 @@ def preprocess_data(df):
 
     return df
 
-# Add custom CSS for styling
-st.markdown("""
-    <style>
-        body {
-            background-color: #F5F5F5;
-            font-family: 'Arial', sans-serif;
-        }
-        .sidebar .sidebar-content {
-            background-color: #E5E5E5;
-            color: #333;
-        }
-        .title {
-            color: #00A3E0;
-        }
-        .stButton>button {
-            background-color: #00A3E0;
-            color: white;
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-        }
-        .stButton>button:hover {
-            background-color: #007D9C;
-        }
-        .stFileUploader>div {
-            background-color: #E5E5E5;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .stTextInput>div>div>input {
-            background-color: #FFFFFF;
-            border: 1px solid #00A3E0;
-            font-size: 16px;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Sidebar for navigation
+# Sidebar for navigation with a card layout
 st.sidebar.title("Navigation")
 app_mode = st.sidebar.radio("Choose an option", ["Home", "Model Prediction", "Evaluation Metrics"])
 
+# Home page content
 if app_mode == "Home":
     st.title("Welcome to the Anomaly Detection App")
     st.write("""
@@ -95,6 +116,7 @@ if app_mode == "Home":
     Choose the options from the sidebar to interact with the app.
     """)
 
+# Model Prediction page content
 elif app_mode == "Model Prediction":
     st.title("Intrusion Detection Model Prediction")
     
@@ -142,6 +164,7 @@ elif app_mode == "Model Prediction":
         except Exception as e:
             st.error(f"Error processing the uploaded file: {e}")
 
+# Evaluation Metrics page content
 elif app_mode == "Evaluation Metrics":
     st.title("Evaluation Metrics")
     
