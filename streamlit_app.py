@@ -18,15 +18,18 @@ st.markdown("""
             padding: 2rem;
             border-radius: 10px;
         }
-        .sidebar .sidebar-content {
-            padding: 2rem;
-        }
-
+        
         /* Styling for sidebar */
         .sidebar .sidebar-content {
             background-color: #f4f7f9;
             border-radius: 10px;
             padding: 20px;
+            width: 250px; /* Set fixed width */
+        }
+        
+        /* Force a consistent width */
+        .css-1d391kg {  /* Adjusts sidebar width container */
+            width: 300px !important;
         }
         
         /* Box Style for Sidebar Navigation */
@@ -60,7 +63,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
 
 # Load the trained model
 @st.cache_resource
