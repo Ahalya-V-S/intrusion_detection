@@ -67,28 +67,21 @@ st.markdown("""
 # Load the trained model
 @st.cache_resource
 def load_model():
-    return joblib.load('XG_Boost_model.pkl')  # Replace with your model path
+    return joblib.load('XG_Boost_model.pkl')  
 
-# Encoding dictionary
 encoding_dict = {
     "protocol_type": LabelEncoder(),
     "service": LabelEncoder(),
     "flag": LabelEncoder()
 }
-
-# StandardScaler instance for scaling
 scaler = StandardScaler()
 
-# Preprocessing function to mirror training steps
+# Preprocessing function 
 def preprocess_data(df):
     # Encode categorical features using predefined LabelEncoders
     for col, encoder in encoding_dict.items():
         if col in df.columns:
             df[col] = encoder.fit_transform(df[col])
-    
-    # Drop 'num_outbound_cmds' if it exists in the dataframe
-    if 'num_outbound_cmds' in df.columns:
-        df = df.drop(columns=['num_outbound_cmds'])
 
     # Select only the relevant features
     selected_features = [
@@ -127,11 +120,11 @@ elif evaluation_button:
 
 # Show content based on the selected page
 if st.session_state.page == "Home":
-    st.title("Welcome to the Anomaly Detection App")
+    st.title("Welcome to the Intrusion Detection System")
     st.write("""
-    This app allows you to upload a CSV file and get predictions on network anomaly detection. 
-    It uses a trained machine learning model to predict network traffic anomalies and provide evaluation metrics. 
-    Choose the options from the sidebar to interact with the app.
+        An intrusion detection system (IDS) is an application that monitors network traffic 
+        and searches for known threats and suspicious or malicious activity. 
+        The IDS sends alerts to IT and security teams when it detects any security risks and threats.
     """)
 
 elif st.session_state.page == "Model Prediction":
