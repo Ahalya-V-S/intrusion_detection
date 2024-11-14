@@ -221,8 +221,8 @@ elif st.session_state.page == "Model Prediction":
                 st.pyplot(fig)
                 # Pie chart to show proportion of Normal vs. Anomaly
                 st.write("Prediction Proportion:")
-                labels = df['Predictions'].value_counts().index
-                sizes = df['Predictions'].value_counts().values
+                labels = df1['Predictions'].value_counts().index
+                sizes = df1['Predictions'].value_counts().values
 
                 fig, ax = plt.subplots()
                 ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['#66b3ff', '#ff6666'])
