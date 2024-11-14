@@ -219,7 +219,15 @@ elif st.session_state.page == "Model Prediction":
                 fig, ax = plt.subplots()
                 sns.histplot(df1['Predictions'], kde=True, ax=ax)
                 st.pyplot(fig)
+                # Pie chart to show proportion of Normal vs. Anomaly
+                st.write("Prediction Proportion:")
+                labels = df['Predictions'].value_counts().index
+                sizes = df['Predictions'].value_counts().values
 
+                fig, ax = plt.subplots()
+                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['#66b3ff', '#ff6666'])
+                ax.axis('equal')  # Equal aspect ratio ensures the pie chart is circular.
+                st.pyplot(fig)
                 # Download predictions
                 st.write("Download Predictions:")
                 st.download_button(
