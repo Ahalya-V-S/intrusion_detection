@@ -48,18 +48,25 @@ st.markdown("""
             background-color: #e8f0fe;
         }
 
-        /* Button Styling */
         .stButton>button {
             background-color: #ffffff;
             color: black;
             border-radius: 5px;
             padding: 12px 24px;
             font-size: 16px;
-            border: 2px solid black; 
+            border: 2px solid black;
+            width: 100%; 
+            text-align: center; 
+            display: block; 
         }
         .stButton>button:hover {
             background-color: #000000;
             color: white;
+        }
+
+        .button-container {
+            width: 200px;
+            margin: 0 auto;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -102,9 +109,11 @@ def preprocess_data(df):
 
 # Sidebar for navigation using clickable boxes
 st.sidebar.title("Menu")
+st.markdown('<div class="button-container">', unsafe_allow_html=True)
 home_button = st.sidebar.button("Home")
 prediction_button = st.sidebar.button("Model Prediction")
 evaluation_button = st.sidebar.button("Evaluation Metrics")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Create a session state to keep track of the active page
 if 'page' not in st.session_state:
