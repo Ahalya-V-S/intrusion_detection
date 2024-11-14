@@ -188,6 +188,7 @@ elif st.session_state.page == "Model Prediction":
         try:
             # Read the uploaded file
             df = pd.read_csv(uploaded_file)
+            df1 = pd.read_csv(uploaded_file)
             st.write("Uploaded CSV Data:")
             st.write(df.head())
 
@@ -209,21 +210,21 @@ elif st.session_state.page == "Model Prediction":
 
                 # Make predictions
                 predictions = model.predict(df_processed)
-                df['Predictions'] = np.where(predictions == 1, 'Normal', 'Anomaly')
+                df1['Predictions'] = np.where(predictions == 1, 'Normal', 'Anomaly')
                 st.write("Prediction Results:")
-                st.write(df[['Predictions']].head())
+                st.write(df1[['Predictions']].head())
 
                 # Plot prediction distribution
                 st.write("Prediction Distribution:")
                 fig, ax = plt.subplots()
-                sns.histplot(df['Predictions'], kde=True, ax=ax)
+                sns.histplot(df1['Predictions'], kde=True, ax=ax)
                 st.pyplot(fig)
 
                 # Download predictions
                 st.write("Download Predictions:")
                 st.download_button(
                     label="Download CSV with Predictions",
-                    data=df.to_csv(index=False),
+                    data=df1.to_csv(index=False),
                     file_name="anomaly_prediction.csv",
                     mime="text/csv"
                 )
