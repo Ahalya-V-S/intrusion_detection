@@ -24,10 +24,9 @@ st.markdown("""
             background-color: #f4f7f9;
             border-radius: 10px;
             padding: 20px;
-            width: 250px; /* Set fixed width */
+            width: 250px; 
         }
         
-        /* Force a consistent width */
         .css-1d391kg {  /* Adjusts sidebar width container */
             width: 300px !important;
         }
