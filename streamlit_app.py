@@ -120,12 +120,52 @@ elif evaluation_button:
 
 # Show content based on the selected page
 if st.session_state.page == "Home":
-    st.title("Welcome to the Intrusion Detection System")
+    st.title("Welcome to the Anomaly Detection App")
+
     st.write("""
-        An intrusion detection system (IDS) is an application that monitors network traffic 
-        and searches for known threats and suspicious or malicious activity. 
-        The IDS sends alerts to IT and security teams when it detects any security risks and threats.
-    """)
+An **Intrusion Detection System (IDS)** is a security application that continuously monitors network traffic, 
+searching for known threats and suspicious or malicious activities. When any security risks or threats are 
+detected, the IDS sends alerts to IT and security teams, helping them respond proactively to potential issues 
+before they escalate.
+
+This app allows you to leverage a trained machine learning model to analyze network traffic for possible anomalies, 
+helping to secure your network by detecting patterns indicative of malicious activity. With a simple interface 
+and powerful features, you can easily upload data, receive predictions, and analyze model performance metrics.
+
+### Key Features
+
+- **Model Prediction**: The core functionality of this IDS app is to provide **anomaly predictions** based on 
+network traffic data. By uploading a CSV file containing network traffic details, you can leverage our trained 
+machine learning model to detect anomalies. This feature makes it simple for users to analyze bulk traffic data 
+and identify potential security threats.
+
+- **Evaluation Metrics**: This feature allows users to evaluate the performance of the IDS model based on 
+ground-truth labels provided in the uploaded dataset. It calculates metrics such as **accuracy, precision, 
+recall, and F1-score**, which are essential to understanding the effectiveness of the IDS model. Visualizations 
+like the confusion matrix are also included for a clear view of the model’s performance on different classes 
+(attack vs. non-attack).
+
+### How to Use the App
+
+1. **Home Page**: This section gives an overview of the application, including its purpose and features. 
+   Start here to understand what the app offers.
+
+2. **Model Prediction**:
+    - Go to the sidebar and click "Model Prediction".
+    - Upload your network traffic CSV file (in the required format).
+    - The model will process your data and provide anomaly predictions, indicating potential security threats.
+    - Visualizations, including distribution of predictions, give a quick look at possible risks in your data.
+
+3. **Evaluation Metrics**:
+    - Click on "Evaluation Metrics" in the sidebar.
+    - Upload a CSV file containing both network traffic data and true labels (ground-truth values).
+    - This section provides a confusion matrix and classification report, helping you assess the IDS model’s 
+      accuracy in detecting malicious traffic. 
+
+By using this IDS app, you can get real-time insights into network security, identify suspicious patterns in 
+network traffic, and evaluate the reliability of the IDS model for further improvements.
+""")
+
 
 elif st.session_state.page == "Model Prediction":
     st.title("Intrusion Detection Model Prediction")
