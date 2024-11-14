@@ -188,7 +188,7 @@ elif st.session_state.page == "Model Prediction":
         try:
             # Read the uploaded file
             df = pd.read_csv(uploaded_file)
-            df1 = pd.read_csv(uploaded_file)
+            df1 = df
             st.write("Uploaded CSV Data:")
             st.write(df.head())
 
