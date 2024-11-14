@@ -151,7 +151,7 @@ and identify potential security threats.
 ground-truth labels provided in the uploaded dataset. It calculates metrics such as **accuracy, precision, 
 recall, and F1-score**, which are essential to understanding the effectiveness of the IDS model. Visualizations 
 like the confusion matrix are also included for a clear view of the model’s performance on different classes 
-(attack vs. non-attack).
+(anomaly or normal).
 
 ### How to Use the App
 
@@ -209,8 +209,7 @@ elif st.session_state.page == "Model Prediction":
 
                 # Make predictions
                 predictions = model.predict(df_processed)
-                df['Predictions'] = predictions
-
+                df['Predictions'] = np.where(predictions == 1, 'Normal', 'Anomaly')
                 st.write("Prediction Results:")
                 st.write(df[['Predictions']].head())
 
@@ -220,12 +219,12 @@ elif st.session_state.page == "Model Prediction":
                 sns.histplot(df['Predictions'], kde=True, ax=ax)
                 st.pyplot(fig)
 
-                # Option to download predictions
+                # Download predictions
                 st.write("Download Predictions:")
                 st.download_button(
                     label="Download CSV with Predictions",
                     data=df.to_csv(index=False),
-                    file_name="predictions_with_data.csv",
+                    file_name="anomaly_prediction.csv",
                     mime="text/csv"
                 )
 
