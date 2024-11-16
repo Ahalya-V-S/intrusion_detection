@@ -10,6 +10,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 # Set the page configuration
 st.set_page_config(page_title="Anomaly Detection", page_icon="🌐")
 
+#Styling configuration
 st.markdown("""
     <style>
         /* Page Layout */
@@ -27,7 +28,8 @@ st.markdown("""
             width: 250px; 
         }
         
-        .css-1d391kg {  /* Adjusts sidebar width container */
+        .css-1d391kg {  
+            /* Adjusts sidebar width container */
             width: 300px !important;
         }
         
@@ -74,7 +76,7 @@ st.markdown("""
 # Load the trained model
 @st.cache_resource
 def load_model():
-    return joblib.load('XG_Boost_model.pkl')  
+    return joblib.load('XG_Boost_NSLKDD.pkl')  
 
 encoding_dict = {
     "protocol_type": LabelEncoder(),
@@ -90,7 +92,7 @@ def preprocess_data(df):
         if col in df.columns:
             df[col] = encoder.fit_transform(df[col])
 
-    # Select only the relevant features
+    # Select only the relevant features found using RFE (refer the notebook)
     selected_features = [
         'protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes', 'hot',
         'logged_in', 'count', 'srv_count', 'same_srv_rate', 'diff_srv_rate',
@@ -107,7 +109,7 @@ def preprocess_data(df):
 
     return df
 
-# Sidebar for navigation using clickable boxes
+# Sidebar for navigation using buttons
 st.markdown('<div class="button-container">', unsafe_allow_html=True)
 home_button = st.sidebar.button("Home")
 prediction_button = st.sidebar.button("Model Prediction")
@@ -127,9 +129,10 @@ elif evaluation_button:
     st.session_state.page = "Evaluation Metrics"
 
 # Show content based on the selected page
+
 if st.session_state.page == "Home":
     st.title("Welcome to the Anomaly Detection App")
-
+    # Markdown about the info of the model
     st.write("""
 An **Intrusion Detection System (IDS)** is a security application that continuously monitors network traffic, 
 searching for known threats and suspicious or malicious activities. When any security risks or threats are 
@@ -170,7 +173,7 @@ like the confusion matrix are also included for a clear view of the model’s pe
     - This section provides a confusion matrix and classification report, helping you assess the IDS model’s 
       accuracy in detecting malicious traffic. 
 
-By using this IDS app, you can get real-time insights into network security, identify suspicious patterns in 
+By using this web application, you can get real-time insights into network security, identify suspicious patterns in 
 network traffic, and evaluate the reliability of the IDS model for further improvements.
 """)
 
@@ -219,6 +222,7 @@ elif st.session_state.page == "Model Prediction":
                 fig, ax = plt.subplots()
                 sns.histplot(df1['Predictions'], kde=True, ax=ax)
                 st.pyplot(fig)
+
                 # Pie chart to show proportion of Normal vs. Anomaly
                 st.write("Prediction Proportion:")
                 labels = df1['Predictions'].value_counts().index
@@ -228,6 +232,7 @@ elif st.session_state.page == "Model Prediction":
                 ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['#66b3ff', '#ff6666'])
                 ax.axis('equal')  # Equal aspect ratio ensures the pie chart is circular.
                 st.pyplot(fig)
+
                 # Download predictions
                 st.write("Download Predictions:")
                 st.download_button(
