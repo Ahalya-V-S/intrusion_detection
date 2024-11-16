@@ -36,10 +36,10 @@ This project is a **Intrusion Detection System (IDS)** web application built usi
 2. **Run the application**:
 
     ```bash
-    streamlit run app.py
+    streamlit run streamlit_app.py
     ```
 
-4. **Open the app**: The Streamlit app will open in your default browser at `http://localhost:8501`.
+3. **Open the app**: The Streamlit app will open in your default browser (localhost) `.
 
 ## Usage
 
