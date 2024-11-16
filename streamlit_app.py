@@ -76,8 +76,7 @@ st.markdown("""
 # Load the trained model
 @st.cache_resource
 def load_model():
-    #return joblib.load('intrusionDetection_model.pkl')  
-    return joblib.load('xgboost_model.pkl')  
+    return joblib.load('intrusionDetection_model.pkl')   
 
 encoding_dict = {
     "protocol_type": LabelEncoder(),
