@@ -76,7 +76,7 @@ st.markdown("""
 # Load the trained model
 @st.cache_resource
 def load_model():
-    return joblib.load('XG_Boost_NSLKDD.pkl')  
+    return joblib.load('intrusionDetection_model.pkl')  
 
 encoding_dict = {
     "protocol_type": LabelEncoder(),
@@ -93,26 +93,8 @@ def preprocess_data(df):
             df[col] = encoder.fit_transform(df[col])
 
     # Select only the relevant features found using RFE (refer the notebook)
-    selected_features = ['protocol_type',
- 'service',
- 'flag',
- 'src_bytes',
- 'dst_bytes',
- 'hot',
- 'logged_in',
- 'count',
- 'srv_count',
- 'srv_serror_rate',
- 'same_srv_rate',
- 'diff_srv_rate',
- 'dst_host_count',
- 'dst_host_srv_count',
- 'dst_host_same_srv_rate',
- 'dst_host_diff_srv_rate',
- 'dst_host_same_src_port_rate',
- 'dst_host_srv_diff_host_rate',
- 'dst_host_srv_serror_rate',
- 'dst_host_srv_rerror_rate']
+    selected_features = ['protocol_type',  'service', 'flag', 'src_bytes', 'dst_bytes', 'hot','logged_in', 'count', 'srv_count', 'srv_serror_rate', 'same_srv_rate', 'diff_srv_rate', 'dst_host_count', 'dst_host_srv_count', 'dst_host_same_srv_rate', 'dst_host_diff_srv_rate', 'dst_host_same_src_port_rate', 'dst_host_srv_diff_host_rate', 'dst_host_srv_serror_rate', 'dst_host_srv_rerror_rate']
+            
     df = df[selected_features]
 
     # Scale the features
@@ -208,12 +190,7 @@ elif st.session_state.page == "Model Prediction":
             st.write(df.head())
 
             # Check if required columns exist in the data
-            required_columns = ['protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes', 'hot',
-                                'logged_in', 'count', 'srv_count', 'same_srv_rate', 'diff_srv_rate',
-                                'dst_host_count', 'dst_host_srv_count', 'dst_host_same_srv_rate',
-                                'dst_host_diff_srv_rate', 'dst_host_same_src_port_rate',
-                                'dst_host_srv_diff_host_rate', 'dst_host_serror_rate',
-                                'dst_host_srv_serror_rate', 'dst_host_srv_rerror_rate']
+            required_columns = ['protocol_type',  'service', 'flag', 'src_bytes', 'dst_bytes', 'hot','logged_in', 'count', 'srv_count', 'srv_serror_rate', 'same_srv_rate', 'diff_srv_rate', 'dst_host_count', 'dst_host_srv_count', 'dst_host_same_srv_rate', 'dst_host_diff_srv_rate', 'dst_host_same_src_port_rate', 'dst_host_srv_diff_host_rate', 'dst_host_srv_serror_rate', 'dst_host_srv_rerror_rate']
             
             if not all(col in df.columns for col in required_columns):
                 st.error("Uploaded CSV is missing required columns.")
