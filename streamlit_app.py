@@ -206,6 +206,12 @@ elif st.session_state.page == "Model Prediction":
                 st.write("Prediction Results:")
                 st.write(df1[['Predictions']].head())
 
+                 # Plot prediction distribution-The histogram shows discrete counts, while the KDE provides a continuous representation of the distribution.
+                st.write("Prediction Distribution:")
+                fig, ax = plt.subplots()
+                sns.histplot(df1['Predictions'], ax=ax)
+                st.pyplot(fig)
+
                 # Pie chart to show proportion of Normal vs. Anomaly
                 st.write("Prediction Proportion:")
                 labels = df1['Predictions'].value_counts().index
